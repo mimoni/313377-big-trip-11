@@ -327,7 +327,8 @@ render(tripEventsElement, createSortTemplate());
 render(tripEventsElement, createEditEventTemplate());
 render(tripEventsElement, createDayTemplate());
 
+const POINT_COUNT = 3;
 const routerPointContainerElement = siteMainElement.querySelector(`.trip-events__list`);
-for (let i = 0; i < 3; i++) {
+for (let i = 0; POINT_COUNT < 3; i++) {
   render(routerPointContainerElement, createRoutePointTemplate());
 }
