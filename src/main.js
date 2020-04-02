@@ -1,5 +1,3 @@
-'use strict';
-
 const createRouteTemplate = () => {
   return (
     `<section class="trip-main__trip-info  trip-info">
