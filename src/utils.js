@@ -18,9 +18,7 @@ const formatDate = (date) => {
   const month = castTimeFormat(date.getMonth() + 1);
   const year = castTimeFormat(date.getFullYear()).slice(2);
 
-  const fullDate = `${dateNow}/${month}/${year}`;
-
-  return fullDate;
+  return `${dateNow}/${month}/${year}`;
 };
 
 const getRandomArrayItem = (array) => {
@@ -38,10 +36,7 @@ function shuffleArray(array) {
   return result;
 }
 
-const getStartDate = () => {
-  const targetDate = new Date();
-  return targetDate;
-};
+const getStartDate = () => new Date();
 
 const getRandomDate = () => {
   const targetDate = new Date();
