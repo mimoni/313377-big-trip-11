@@ -204,12 +204,12 @@ const createEditFormTemplate = (card) => {
 
 export default class EditForm {
   constructor(card) {
-    this._cards = card;
+    this._card = card;
     this._element = null;
   }
 
   getTemplate() {
-    return createEditFormTemplate(this._cards);
+    return createEditFormTemplate(this._card);
   }
 
   getElement() {
