@@ -1,26 +1,3 @@
-const createElement = (template) => {
-  const newElement = document.createElement(`div`);
-  newElement.innerHTML = template;
-
-  return newElement.firstChild;
-};
-
-const RenderPosition = {
-  AFTERBEGIN: `afterbegin`,
-  BEFOREEND: `beforeend`,
-};
-
-const render = (container, element, place) => {
-  switch (place) {
-    case RenderPosition.AFTERBEGIN:
-      container.prepend(element);
-      break;
-    case RenderPosition.BEFOREEND:
-      container.append(element);
-      break;
-  }
-};
-
 const castTimeFormat = (value) => {
   return value < 10 ? `0${value}` : String(value);
 };
@@ -29,14 +6,14 @@ const castTimeMinutesFormat = (value) => {
   return value < 30 ? `00` : `30`;
 };
 
-const formatTime = (date) => {
+export const formatTime = (date) => {
   const hours = castTimeFormat(date.getHours() % 24);
   const minutes = castTimeMinutesFormat(date.getMinutes());
 
   return `${hours}:${minutes}`;
 };
 
-const formatDate = (date) => {
+export const formatDate = (date) => {
   const dateNow = castTimeFormat(date.getDate());
   const month = castTimeFormat(date.getMonth() + 1);
   const year = castTimeFormat(date.getFullYear()).slice(2);
@@ -44,24 +21,24 @@ const formatDate = (date) => {
   return `${dateNow}/${month}/${year}`;
 };
 
-const getRandomArrayItem = (array) => {
+export const getRandomArrayItem = (array) => {
   const randomIndex = getRandomIntegerNumber(0, array.length);
   return array[randomIndex];
 };
 
-const getRandomIntegerNumber = (min, max) => {
+export const getRandomIntegerNumber = (min, max) => {
   return min + Math.floor(Math.random() * (max - min));
 };
 
-function shuffleArray(array) {
+export const shuffleArray = (array) => {
   const result = array.slice();
   result.sort(() => Math.random() - 0.5);
   return result;
-}
+};
 
-const getStartDate = () => new Date();
+export const getStartDate = () => new Date();
 
-const getRandomDate = () => {
+export const getRandomDate = () => {
   const targetDate = getStartDate();
   const diffValueDate = getRandomIntegerNumber(2, 15);
   const diffValueHours = getRandomIntegerNumber(0, 24);
@@ -71,17 +48,4 @@ const getRandomDate = () => {
   targetDate.setMinutes(targetDate.getMinutes() + diffValueMinutes);
 
   return targetDate;
-};
-
-export {
-  formatTime,
-  formatDate,
-  getRandomArrayItem,
-  getRandomIntegerNumber,
-  shuffleArray,
-  getStartDate,
-  getRandomDate,
-  createElement,
-  RenderPosition,
-  render,
 };

@@ -5,14 +5,15 @@ import HeaderSiteMenuComponent from './components/header-trip-menu.js';
 import HeaderFilterComponent from './components/header-trip-filter.js';
 
 import MainNoPointsComponent from './components/maint-content-no-points.js';
-import MainTripDaysListComponent from './components/maint-content-listDay.js';
+import MainTripDaysListComponent from './components/maint-content-list-day.js';
 import MainSortTripComponent from './components/maint-content-filter-sort.js';
 import MainNumberDayComponent from './components/maint-content-day.js';
-import MainListWaypointComponent from './components/maint-content-listWaypoint.js';
+import MainListWaypointComponent from './components/maint-content-list-waypoint.js';
 import MainEditFormComponent from './components/maint-content-edit-form.js';
 import MainWaypointItemComponent from './components/maint-content-waypoint.js';
 
-import {render, RenderPosition, getRandomIntegerNumber} from './utils.js';
+import {getRandomIntegerNumber} from './utils/common.js';
+import {render, RenderPosition} from './utils/render.js';
 import {generateFilters} from './mock/filter.js';
 import {generateCards} from './mock/events.js';
 
@@ -29,17 +30,17 @@ const headerTripControlsElement = headerElement.querySelector(`.trip-controls`);
 const mainTripEventsElement = document.querySelector(`.trip-events`);
 
 const getBasicBlock = () => {
-  render(headerTripMainElement, new InfoContainerComponent().getElement(), RenderPosition.AFTERBEGIN);
+  render(headerTripMainElement, new InfoContainerComponent(), RenderPosition.AFTERBEGIN);
 };
 
 const getHeaderSite = () => {
   const headerTripInfoElement = headerElement.querySelector(`.trip-info`);
   const filters = generateFilters();
 
-  render(headerTripInfoElement, new HeaderInfoTripComponent().getElement(), RenderPosition.BEFOREEND);
-  render(headerTripInfoElement, new HeaderCostTripComponent().getElement(), RenderPosition.BEFOREEND);
-  render(headerTripControlsElement, new HeaderSiteMenuComponent().getElement(), RenderPosition.AFTERBEGIN);
-  render(headerTripControlsElement, new HeaderFilterComponent(filters).getElement(), RenderPosition.BEFOREEND);
+  render(headerTripInfoElement, new HeaderInfoTripComponent(), RenderPosition.BEFOREEND);
+  render(headerTripInfoElement, new HeaderCostTripComponent(), RenderPosition.BEFOREEND);
+  render(headerTripControlsElement, new HeaderSiteMenuComponent(), RenderPosition.AFTERBEGIN);
+  render(headerTripControlsElement, new HeaderFilterComponent(filters), RenderPosition.BEFOREEND);
 };
 
 const getMainContentSite = () => {
@@ -47,11 +48,11 @@ const getMainContentSite = () => {
 
   const renderTripCard = (cardListElement, card) => {
     const replaceCardToFormCard = () => {
-      cardListElement.replaceChild(editFormComponent.getElement(), waypointItemComponent.getElement());
+      cardListElement.replaceChild(editFormComponent, waypointItemComponent.getElement());
     };
 
     const replaceFormCardToCard = () => {
-      cardListElement.replaceChild(waypointItemComponent.getElement(), editFormComponent.getElement());
+      cardListElement.replaceChild(waypointItemComponent, editFormComponent.getElement());
     };
 
     const onEscKeyDown = (evt) => {
@@ -78,7 +79,7 @@ const getMainContentSite = () => {
       document.removeEventListener(`keydown`, onEscKeyDown);
     });
 
-    render(cardListElement, waypointItemComponent.getElement(), RenderPosition.BEFOREEND);
+    render(cardListElement, waypointItemComponent, RenderPosition.BEFOREEND);
   };
 
   const renderTripDays = (daysListElement, cardsTrip) => {
@@ -90,9 +91,9 @@ const getMainContentSite = () => {
       const numberDay = new MainNumberDayComponent(index);
       const mainListWaypoint = new MainListWaypointComponent();
 
-      render(mainTripDaysListElement, numberDay.getElement(), RenderPosition.BEFOREEND);
+      render(mainTripDaysListElement, numberDay, RenderPosition.BEFOREEND);
 
-      render(numberDay.getElement(), mainListWaypoint.getElement(), RenderPosition.BEFOREEND);
+      render(numberDay.getElement(), mainListWaypoint, RenderPosition.BEFOREEND);
 
       const mainListWaypointElement = mainListWaypoint.getElement();
       cardsTrip.slice(0, tripList).forEach((card) => {
@@ -102,12 +103,12 @@ const getMainContentSite = () => {
   };
 
   const tripDaysListComponent = new MainTripDaysListComponent();
-  render(mainTripEventsElement, new MainSortTripComponent().getElement(), RenderPosition.AFTERBEGIN);
+  render(mainTripEventsElement, new MainSortTripComponent(), RenderPosition.AFTERBEGIN);
 
   if (!cards.length) {
-    render(mainTripEventsElement, new MainNoPointsComponent().getElement(), RenderPosition.BEFOREEND);
+    render(mainTripEventsElement, new MainNoPointsComponent(), RenderPosition.BEFOREEND);
   } else {
-    render(mainTripEventsElement, tripDaysListComponent.getElement(), RenderPosition.BEFOREEND);
+    render(mainTripEventsElement, tripDaysListComponent, RenderPosition.BEFOREEND);
     renderTripDays(tripDaysListComponent, cards);
   }
 };

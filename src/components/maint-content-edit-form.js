@@ -1,4 +1,5 @@
-import {formatTime, formatDate, getRandomArrayItem, createElement} from '../utils.js';
+import {formatTime, formatDate, getRandomArrayItem} from '../utils/common.js';
+import AbstractComponent from './abstract-component.js';
 
 const createRepeatingOffersMarkup = (options) => {
   return options.map((option, index) => {
@@ -73,7 +74,6 @@ const createRepeatingPhotoMarkup = (counts) => {
   return result;
 };
 
-
 const createEditFormTemplate = (card) => {
   const {city, typeOfWaypoints, description, startDate, endDate, offer, price, photosCount, isFavorite} = card;
   const {transfers, activitys} = typeOfWaypoints;
@@ -93,7 +93,6 @@ const createEditFormTemplate = (card) => {
 
   const repeatingActivityMarkup = createRepeatingActivityMarkup(activitys, randomWaypointItem);
   const repeatingPhotoMarkup = createRepeatingPhotoMarkup(photosCount);
-
 
   return (
     `<li class="trip-events__item">
@@ -202,24 +201,13 @@ const createEditFormTemplate = (card) => {
   );
 };
 
-export default class EditForm {
+export default class EditForm extends AbstractComponent {
   constructor(card) {
+    super();
     this._card = card;
-    this._element = null;
   }
 
   getTemplate() {
     return createEditFormTemplate(this._card);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
