@@ -1,14 +1,17 @@
-import {createInfoContainerTemplate, createTripDaysList} from './components/basic-block.js';
-import {createInfoTripTemplate} from './components/header-trip-info.js';
-import {createCostTripTemplate} from './components/header-trip-cost.js';
-import {createMenuTripTemplate} from './components/header-trip-menu.js';
-import {createFilterTripTemplate} from './components/header-trip-filter.js';
-import {createSortTripTemplate} from './components/maintContent-filter-sort.js';
-import {createDayTemplate} from './components/maintContent-day.js';
-import {createEditFormItemTemplate} from './components/maintContent-edit-form.js';
-import {createWaypointItemTemplate} from './components/maintContent-waypoint.js';
+import InfoContainerComponent from './components/header-containerInfo.js';
+import HeaderInfoTripComponent from './components/header-trip-info.js';
+import HeaderCostTripComponent from './components/header-trip-cost.js';
+import HeaderSiteMenuComponent from './components/header-trip-menu.js';
+import HeaderFilterComponent from './components/header-trip-filter.js';
 
-import {getRandomIntegerNumber} from './utils.js';
+import MainTripDaysListComponent from './components/maintContent-listDay.js';
+import MainSortTripComponent from './components/maintContent-filter-sort.js';
+import MainNumberDayComponent from './components/maintContent-day.js';
+import MainListWaypointComponent from './components/maintContent-listWaypoint.js';
+import MainEditFormComponent from './components/maintContent-edit-form.js';
+import MainWaypointItemComponent from './components/maintContent-waypoint.js';
+
+import {render, RenderPosition, getRandomIntegerNumber} from './utils.js';
 import {generateFilters} from './mock/filter.js';
 import {generateCards} from './mock/events.js';
 
@@ -18,43 +21,68 @@ const headerTripMainElement = headerElement.querySelector(`.trip-main`);
 const headerTripControlsElement = headerElement.querySelector(`.trip-controls`);
 const mainTripEventsElement = document.querySelector(`.trip-events`);
 
-const renderTemplate = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
-};
-
 const getBasicBlock = () => {
-  renderTemplate(headerTripMainElement, createInfoContainerTemplate(), `afterbegin`);
-  renderTemplate(mainTripEventsElement, createTripDaysList());
+  render(headerTripMainElement, new InfoContainerComponent().getElement(), RenderPosition.AFTERBEGIN);
 };
 
 const getHeaderSite = () => {
+  const headerTripInfoElement = headerElement.querySelector(`.trip-info`);
   const filters = generateFilters();
 
-  const headerTripInfoElement = headerElement.querySelector(`.trip-info`);
-  renderTemplate(headerTripInfoElement, createInfoTripTemplate());
-  renderTemplate(headerTripInfoElement, createCostTripTemplate());
-  renderTemplate(headerTripControlsElement, createMenuTripTemplate(), `afterbegin`);
-  renderTemplate(headerTripControlsElement, createFilterTripTemplate(filters));
+  render(headerTripInfoElement, new HeaderInfoTripComponent().getElement(), RenderPosition.BEFOREEND);
+  render(headerTripInfoElement, new HeaderCostTripComponent().getElement(), RenderPosition.BEFOREEND);
+  render(headerTripControlsElement, new HeaderSiteMenuComponent().getElement(), RenderPosition.AFTERBEGIN);
+  render(headerTripControlsElement, new HeaderFilterComponent(filters).getElement(), RenderPosition.BEFOREEND);
 };
 
 const getMainContentSite = () => {
   const cards = generateCards(TRIP_COUNT);
-  const mainTripDaysItemElement = document.querySelector(`.trip-days`);
 
-  renderTemplate(mainTripEventsElement, createSortTripTemplate(), `afterbegin`);
+  const renderTripCard = (cardListElement, countCard) => {
+    const onEditButtonClick = () => {
+      cardListElement.replaceChild(editFormComponent.getElement(), waypointItemComponent.getElement());
+    };
 
-  cards.map((card, index) => {
-    const tripList = getRandomIntegerNumber(3, 5);
-    renderTemplate(mainTripDaysItemElement, createDayTemplate(card, index));
-    const mainTripEventsListElement = mainTripEventsElement.querySelector(`.trip-events__list--${index}`);
+    const onEditFormSubmit = (evt) => {
+      evt.preventDefault();
+      cardListElement.replaceChild(waypointItemComponent.getElement(), editFormComponent.getElement());
+    };
 
-    if (index === 0) {
-      renderTemplate(mainTripEventsListElement, createEditFormItemTemplate(card, index));
-    }
+    const waypointItemComponent = new MainWaypointItemComponent(countCard);
+    const editEventBtn = waypointItemComponent.getElement().querySelector(`.event__rollup-btn`);
+    editEventBtn.addEventListener(`click`, onEditButtonClick);
 
-    cards.slice(1, tripList)
-      .forEach((count) => renderTemplate(mainTripEventsListElement, createWaypointItemTemplate(count)));
-  });
+    const editFormComponent = new MainEditFormComponent(countCard);
+    const editEventForm = editFormComponent.getElement().querySelector(`form`);
+    editEventForm.addEventListener(`submit`, onEditFormSubmit);
+
+    render(cardListElement, waypointItemComponent.getElement(), RenderPosition.BEFOREEND);
+  };
+
+  const renderTripDays = (daysListElement, cardsTrip) => {
+    const mainTripDaysListElement = daysListElement.getElement();
+
+    cardsTrip.map((card, index) => {
+      const tripList = getRandomIntegerNumber(1, 5);
+
+      const numberDay = new MainNumberDayComponent(card, index);
+      const mainListWaypoint = new MainListWaypointComponent();
+
+      render(mainTripDaysListElement, numberDay.getElement(), RenderPosition.BEFOREEND);
+
+      render(numberDay.getElement(), mainListWaypoint.getElement(), RenderPosition.BEFOREEND);
+
+      const mainListWaypointElement = mainListWaypoint.getElement();
+      cardsTrip.slice(0, tripList).forEach((countCard) => {
+        renderTripCard(mainListWaypointElement, countCard);
+      });
+    });
+  };
+
+  const tripDaysListComponent = new MainTripDaysListComponent();
+  render(mainTripEventsElement, new MainSortTripComponent().getElement(), RenderPosition.AFTERBEGIN);
+  render(mainTripEventsElement, tripDaysListComponent.getElement(), RenderPosition.BEFOREEND);
+  renderTripDays(tripDaysListComponent, cards);
 };
 
 getBasicBlock();
