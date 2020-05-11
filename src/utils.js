@@ -1,3 +1,26 @@
+const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
+};
+
+const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`,
+};
+
+const render = (container, element, place) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
+};
+
 const castTimeFormat = (value) => {
   return value < 10 ? `0${value}` : String(value);
 };
@@ -39,7 +62,7 @@ function shuffleArray(array) {
 const getStartDate = () => new Date();
 
 const getRandomDate = () => {
-  const targetDate = new Date();
+  const targetDate = getStartDate();
   const diffValueDate = getRandomIntegerNumber(2, 15);
   const diffValueHours = getRandomIntegerNumber(0, 24);
   const diffValueMinutes = getRandomIntegerNumber(0, 60);
@@ -50,4 +73,15 @@ const getRandomDate = () => {
   return targetDate;
 };
 
-export {formatTime, formatDate, getRandomArrayItem, getRandomIntegerNumber, shuffleArray, getStartDate, getRandomDate};
+export {
+  formatTime,
+  formatDate,
+  getRandomArrayItem,
+  getRandomIntegerNumber,
+  shuffleArray,
+  getStartDate,
+  getRandomDate,
+  createElement,
+  RenderPosition,
+  render,
+};

@@ -1,4 +1,4 @@
-import {formatTime, formatDate, getRandomArrayItem} from '../utils.js';
+import {formatTime, formatDate, getRandomArrayItem, createElement} from '../utils.js';
 
 const createRepeatingOffersMarkup = (options) => {
   return options.map((option) => {
@@ -13,14 +13,13 @@ const createRepeatingOffersMarkup = (options) => {
   }).join(`\n \n`);
 };
 
-export const createWaypointItemTemplate = (card) => {
+const createWaypointItemTemplate = (card) => {
   const {city, typeOfWaypoints, startDate, endDate, offer, price} = card;
 
   const {transfers, activitys} = typeOfWaypoints;
 
   const randomWaypointItem = getRandomArrayItem([...transfers, ...activitys]);
 
-  // const isExpired = startDate instanceof Date && startDate < Date.now();
   const isDateShowing = !!startDate;
 
   const time = isDateShowing ? formatTime(startDate) : ``;
@@ -57,7 +56,6 @@ export const createWaypointItemTemplate = (card) => {
         <ul class="event__selected-offers">
           ${repeatingOffersMarkup}
 
-
         </ul>
 
         <button class="event__rollup-btn" type="button">
@@ -67,3 +65,25 @@ export const createWaypointItemTemplate = (card) => {
     </li>`
   );
 };
+
+export default class WaypointItem {
+  constructor(card) {
+    this._card = card;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createWaypointItemTemplate(this._card);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

@@ -1,7 +1,4 @@
-// Тип транспорта - class="event__type-item" - моки
-// Опции offer - class="event__available-offers - моки
-
-import {formatTime, formatDate, getRandomArrayItem} from '../utils.js';
+import {formatTime, formatDate, getRandomArrayItem, createElement} from '../utils.js';
 
 const createRepeatingOffersMarkup = (options) => {
   return options.map((option, index) => {
@@ -77,14 +74,11 @@ const createRepeatingPhotoMarkup = (counts) => {
 };
 
 
-export const createEditFormItemTemplate = (card) => {
-
+const createEditFormTemplate = (card) => {
   const {city, typeOfWaypoints, description, startDate, endDate, offer, price, photosCount, isFavorite} = card;
-
   const {transfers, activitys} = typeOfWaypoints;
 
   const randomWaypointItem = getRandomArrayItem([...transfers, ...activitys]);
-  // const isExpired = startDate instanceof Date && startDate < Date.now();
   const isDateShowing = !!startDate;
 
   const time = isDateShowing ? formatTime(startDate) : ``;
@@ -99,6 +93,7 @@ export const createEditFormItemTemplate = (card) => {
 
   const repeatingActivityMarkup = createRepeatingActivityMarkup(activitys, randomWaypointItem);
   const repeatingPhotoMarkup = createRepeatingPhotoMarkup(photosCount);
+
 
   return (
     `<li class="trip-events__item">
@@ -206,3 +201,25 @@ export const createEditFormItemTemplate = (card) => {
     </li>`
   );
 };
+
+export default class EditForm {
+  constructor(card) {
+    this._card = card;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEditFormTemplate(this._card);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
