@@ -203,8 +203,8 @@ const createEditFormTemplate = (card) => {
 };
 
 export default class EditForm {
-  constructor(cards) {
-    this._cards = cards;
+  constructor(card) {
+    this._cards = card;
     this._element = null;
   }
 

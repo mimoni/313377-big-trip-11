@@ -67,8 +67,8 @@ const createWaypointItemTemplate = (card) => {
 };
 
 export default class WaypointItem {
-  constructor(cards) {
-    this._cards = cards;
+  constructor(card) {
+    this._cards = card;
     this._element = null;
   }
 

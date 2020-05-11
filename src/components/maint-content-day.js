@@ -1,6 +1,6 @@
 import {createElement} from '../utils.js';
 
-const createNumberDayTemplate = (card, countDay) => {
+const createNumberDayTemplate = (countDay) => {
   return (
     `<li class="trip-days__item  day ${countDay + 1}">
       <div class="day__info">
@@ -14,14 +14,13 @@ const createNumberDayTemplate = (card, countDay) => {
 
 
 export default class NumberDay {
-  constructor(cards, index) {
-    this._cards = cards;
+  constructor(index) {
     this._index = index;
     this._element = null;
   }
 
   getTemplate() {
-    return createNumberDayTemplate(this._cards, this._index);
+    return createNumberDayTemplate(this._index);
   }
 
   getElement() {
