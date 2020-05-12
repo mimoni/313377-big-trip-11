@@ -35,7 +35,7 @@ const createSortTripTemplate = () => {
   );
 };
 
-export default class SortTrip extends AbstractComponent{
+export default class SortTrip extends AbstractComponent {
   getTemplate() {
     return createSortTripTemplate();
   }

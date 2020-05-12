@@ -13,7 +13,7 @@ import MainEditFormComponent from './components/maint-content-edit-form.js';
 import MainWaypointItemComponent from './components/maint-content-waypoint.js';
 
 import {getRandomIntegerNumber} from './utils/common.js';
-import {render, RenderPosition} from './utils/render.js';
+import {render, replace, RenderPosition} from './utils/render.js';
 import {generateFilters} from './mock/filter.js';
 import {generateCards} from './mock/events.js';
 
@@ -48,11 +48,11 @@ const getMainContentSite = () => {
 
   const renderTripCard = (cardListElement, card) => {
     const replaceCardToFormCard = () => {
-      cardListElement.replaceChild(editFormComponent, waypointItemComponent.getElement());
+      replace(editFormComponent, waypointItemComponent);
     };
 
     const replaceFormCardToCard = () => {
-      cardListElement.replaceChild(waypointItemComponent, editFormComponent.getElement());
+      replace(waypointItemComponent, editFormComponent);
     };
 
     const onEscKeyDown = (evt) => {
@@ -65,15 +65,13 @@ const getMainContentSite = () => {
     };
 
     const waypointItemComponent = new MainWaypointItemComponent(card);
-    const editEventBtn = waypointItemComponent.getElement().querySelector(`.event__rollup-btn`);
-    editEventBtn.addEventListener(`click`, () => {
+    waypointItemComponent.setBtnClickHandler(() => {
       replaceCardToFormCard();
       document.addEventListener(`keydown`, onEscKeyDown);
     });
 
     const editFormComponent = new MainEditFormComponent(card);
-    const editEventForm = editFormComponent.getElement().querySelector(`form`);
-    editEventForm.addEventListener(`submit`, (evt) => {
+    editFormComponent.setSubmitHandler((evt) => {
       evt.preventDefault();
       replaceFormCardToCard();
       document.removeEventListener(`keydown`, onEscKeyDown);

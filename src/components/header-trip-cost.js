@@ -8,7 +8,7 @@ const createCostTripTemplate = () => {
   );
 };
 
-export default class CostTrip extends AbstractComponent{
+export default class CostTrip extends AbstractComponent {
   getTemplate() {
     return createCostTripTemplate();
   }

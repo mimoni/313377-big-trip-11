@@ -77,4 +77,8 @@ export default class WaypointItem extends AbstractComponent {
   getTemplate() {
     return createWaypointItemTemplate(this._card);
   }
+
+  setBtnClickHandler(handler) {
+    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, handler);
+  }
 }
