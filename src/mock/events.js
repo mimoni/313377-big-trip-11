@@ -1,4 +1,4 @@
-import {getRandomArrayItem, getRandomIntegerNumber, shuffleArray, getStartDate, getRandomDate} from '../utils.js';
+import {getRandomArrayItem, getRandomIntegerNumber, shuffleArray, getStartDate, getRandomDate} from '../utils/common.js';
 
 const CITIES = [`Amsterdam`, `Chamonix`, `Geneva`, `Minsk`, `Havana`, `Paris`, `Budapest`, `Rome`, `Riga`, `London`];
 
@@ -25,6 +25,7 @@ const DESCRIPTION_ITEMS = [
 const getOffers = () => {
   const copyOffers = OFFERS.slice();
   const options = copyOffers.slice(0, getRandomIntegerNumber(1, 5));
+
   return shuffleArray(options);
 };
 
@@ -37,6 +38,7 @@ const getArrayPhotos = (count) => {
     result.push(index);
     index++;
   }
+
   return shuffleArray(result);
 };
 
@@ -51,7 +53,6 @@ const generateCard = () => {
     price: getRandomIntegerNumber(100, 200),
     photosCount: getArrayPhotos(getRandomIntegerNumber(1, 5)),
     isFavorite: Math.random() > 0.5,
-
   };
 };
 
