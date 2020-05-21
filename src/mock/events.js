@@ -4,7 +4,8 @@ const CITIES = [`Amsterdam`, `Chamonix`, `Geneva`, `Minsk`, `Havana`, `Paris`, `
 
 const TYPE_OF_WAYPOINTS = {
   transfers: [`Taxi`, `Bus`, `Train`, `Ship`, `Drive`, `Flight`],
-  activitys: [`Check-in`, `Sightseeing`, `Restaurant`],
+  activities: [`Check-in`, `Sightseeing`, `Restaurant`],
+  wayPointsAll: [`Taxi`, `Bus`, `Train`, `Ship`, `Drive`, `Flight`, `Check-in`, `Sightseeing`, `Restaurant`],
 };
 
 const OFFERS = [
@@ -42,6 +43,9 @@ const getArrayPhotos = (count) => {
   return shuffleArray(result);
 };
 
+const {transfers, activities} = TYPE_OF_WAYPOINTS;
+const randomWaypointItem = [...transfers, ...activities];
+
 const generateCard = () => {
   return {
     city: getRandomArrayItem(CITIES),
@@ -52,7 +56,8 @@ const generateCard = () => {
     offer: getOffers(),
     price: getRandomIntegerNumber(100, 200),
     photosCount: getArrayPhotos(getRandomIntegerNumber(1, 5)),
-    isFavorite: Math.random() > 0.5,
+    isFavorite: true,
+    randomWaypointItem: getRandomArrayItem(randomWaypointItem),
   };
 };
 
@@ -62,6 +67,6 @@ const generateCards = (count) => {
     .map(generateCard);
 };
 
-export {generateCard, generateCards};
+export {generateCard, generateCards, getOffers, CITIES, DESCRIPTION_ITEMS};
 
 
