@@ -8,7 +8,7 @@ import MainNoPointsComponent from './components/maint-content-no-points.js';
 import MainTripDaysListComponent from './components/maint-content-list-day.js';
 import MainSortTripComponent from './components/maint-content-filter-sort.js';
 
-import TripController from './controllers/TripController.js';
+import TripController from './controllers/trip-controller.js';
 
 import {render, RenderPosition} from './utils/render.js';
 import {generateFilters} from './mock/filter.js';
