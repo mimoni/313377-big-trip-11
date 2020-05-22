@@ -49,3 +49,10 @@ export const getRandomDate = () => {
 
   return targetDate;
 };
+
+export const getCapitalizeFirstLetter = (value) => {
+  if (typeof value !== `string`) {
+    return ``;
+  }
+  return value[0].toUpperCase() + value.slice(1);
+};

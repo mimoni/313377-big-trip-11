@@ -18,9 +18,9 @@ const createRepeatingOffersMarkup = (options) => {
 const createWaypointItemTemplate = (card) => {
   const {city, typeOfWaypoints, startDate, endDate, offer, price} = card;
 
-  const {transfers, activitys} = typeOfWaypoints;
+  const {transfers, activities} = typeOfWaypoints;
 
-  const randomWaypointItem = getRandomArrayItem([...transfers, ...activitys]);
+  const randomWaypointItem = getRandomArrayItem([...transfers, ...activities]);
 
   const isDateShowing = !!startDate;
 
