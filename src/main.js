@@ -4,9 +4,9 @@ import HeaderCostTripComponent from './components/header-trip-cost.js';
 import HeaderSiteMenuComponent from './components/header-trip-menu.js';
 import HeaderFilterComponent from './components/header-trip-filter.js';
 
-import MainNoPointsComponent from './components/maint-content-no-points.js';
-import MainTripDaysListComponent from './components/maint-content-list-day.js';
-import MainSortTripComponent from './components/maint-content-filter-sort.js';
+import MainNoPointsComponent from './components/main-content-no-points.js';
+import MainTripDaysListComponent from './components/main-content-list-day.js';
+import MainSortTripComponent from './components/main-content-filter-sort.js';
 
 import TripController from './controllers/trip-controller.js';
 

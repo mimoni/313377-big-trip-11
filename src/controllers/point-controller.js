@@ -1,6 +1,6 @@
 import {render, replace, RenderPosition} from '../utils/render';
-import MainWaypointItemComponent from '../components/maint-content-waypoint';
-import MainEditFormComponent from '../components/maint-content-edit-form';
+import MainWaypointItemComponent from '../components/main-content-waypoint';
+import MainEditFormComponent from '../components/main-content-edit-form';
 
 const StatusCodesEsc = {
   ESCAPE: `Escape`,

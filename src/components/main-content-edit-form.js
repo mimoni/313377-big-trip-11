@@ -94,7 +94,7 @@ const createRepeatingPhotoMarkup = (counts) => {
 };
 
 const createEditFormTemplate = (card, attributes = {}) => {
-  const {city, startDate, endDate, price, photosCount, randomWaypointItem} = card;
+  const {city, startDate, endDate, price, photosCount, randomWaypointItem, isFavorite} = card;
   const {offer, typeOfWaypoints, type, description} = attributes;
 
   const isDateShowing = !!startDate;
@@ -105,7 +105,7 @@ const createEditFormTemplate = (card, attributes = {}) => {
   const nextTime = isDateShowing ? formatTime(endDate) : ``;
   const nextDate = isDateShowing ? formatDate(endDate) : ``;
 
-  const favoritesButton = createFavoriteBtnMarkup(`favorite`, card.isFavorite);
+  const favoritesButton = createFavoriteBtnMarkup(`favorite`, isFavorite);
 
   const repeatingOffersMarkup = createRepeatingOffersMarkup(offer);
 

@@ -1,7 +1,7 @@
 import {render, RenderPosition} from '../utils/render.js';
 import {getRandomIntegerNumber} from '../utils/common.js';
-import MainNumberDayComponent from '../components/maint-content-day.js';
-import MainListWaypointComponent from '../components/maint-content-list-waypoint.js';
+import MainNumberDayComponent from '../components/main-content-day.js';
+import MainListWaypointComponent from '../components/main-content-list-waypoint.js';
 import PointController from './point-controller.js';
 
 const MAX_VALUE_IN_TRIP_LIST = 5;
