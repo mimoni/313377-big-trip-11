@@ -1,24 +1,19 @@
-const castTimeFormat = (value) => {
-  return value < 10 ? `0${value}` : String(value);
-};
+import moment from 'moment';
 
-const castTimeMinutesFormat = (value) => {
-  return value < 30 ? `00` : `30`;
-};
+// const castTimeFormat = (value) => {
+//   return value < 10 ? `0${value}` : String(value);
+// };
+//
+// const castTimeMinutesFormat = (value) => {
+//   return value < 30 ? `00` : `30`;
+// };
 
 export const formatTime = (date) => {
-  const hours = castTimeFormat(date.getHours() % 24);
-  const minutes = castTimeMinutesFormat(date.getMinutes());
-
-  return `${hours}:${minutes}`;
+  return moment(date).format(`hh:mm`);
 };
 
 export const formatDate = (date) => {
-  const dateNow = castTimeFormat(date.getDate());
-  const month = castTimeFormat(date.getMonth() + 1);
-  const year = castTimeFormat(date.getFullYear()).slice(2);
-
-  return `${dateNow}/${month}/${year}`;
+  return moment(date).format(`DD/MM/YY hh:mm`);
 };
 
 export const getRandomArrayItem = (array) => {
@@ -55,4 +50,12 @@ export const getCapitalizeFirstLetter = (value) => {
     return ``;
   }
   return value[0].toUpperCase() + value.slice(1);
+};
+
+export const getDuration = (start, end) => {
+  const durationTime = moment(moment(end).diff(start));
+  const day = durationTime.format(`DD`);
+  const hour = durationTime.format(`HH`);
+  const min = durationTime.format(`mm`);
+  return `${day}D ${hour}H ${min}M`;
 };

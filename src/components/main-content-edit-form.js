@@ -1,6 +1,10 @@
-import {formatTime, formatDate, getCapitalizeFirstLetter, getRandomArrayItem} from '../utils/common.js';
+import {formatDate, getCapitalizeFirstLetter, getRandomArrayItem} from '../utils/common.js';
 import AbstractSmartComponent from './abstract-smart-component.js';
 import {CITIES, getOffers, DESCRIPTION_ITEMS} from '../mock/events.js';
+
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+import 'flatpickr/dist/themes/material_blue.css';
 
 const createFavoriteBtnMarkup = (name, isActive = true) => {
   return (
@@ -99,10 +103,8 @@ const createEditFormTemplate = (card, attributes = {}) => {
 
   const isDateShowing = !!startDate;
 
-  const time = isDateShowing ? formatTime(startDate) : ``;
   const date = isDateShowing ? formatDate(startDate) : ``;
 
-  const nextTime = isDateShowing ? formatTime(endDate) : ``;
   const nextDate = isDateShowing ? formatDate(endDate) : ``;
 
   const favoritesButton = createFavoriteBtnMarkup(`favorite`, isFavorite);
@@ -158,12 +160,19 @@ const createEditFormTemplate = (card, attributes = {}) => {
             <label class="visually-hidden" for="event-start-time-1">
               From
             </label>
-            <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${date} ${time}">
+            <input class="event__input  event__input--time" id="event-start-time-1"
+              type="text"
+              name="event-start-time"
+              value="${date}">
             &mdash;
             <label class="visually-hidden" for="event-end-time-1">
               To
             </label>
-            <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${nextDate} ${nextTime}">
+            <input class="event__input  event__input--time"
+              id="event-end-time-1"
+              type="text"
+              name="event-end-time"
+              value="${nextDate}">
           </div>
 
           <div class="event__field-group  event__field-group--price">
@@ -171,7 +180,11 @@ const createEditFormTemplate = (card, attributes = {}) => {
               <span class="visually-hidden">Price</span>
               &euro;
             </label>
-            <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
+            <input class="event__input  event__input--price"
+              id="event-price-1"
+              type="text"
+              name="event-price"
+              value="${price}">
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -218,14 +231,18 @@ export default class EditForm extends AbstractSmartComponent {
     this._card = card;
     this._typeOfWaypoints = card.typeOfWaypoints;
     this._offer = card.offer;
+    this._startDate = card.startDate;
+    this._endDate = card.endDate;
     this._city = card.city;
     this._description = card.description;
 
     this._type = null;
     this._submitHandler = null;
     this._favoriteClickHandler = null;
+    this._flatpickr = null;
 
     this._subscribeOnEvents();
+    this._applyFlatpickr();
   }
 
   getTemplate() {
@@ -242,6 +259,11 @@ export default class EditForm extends AbstractSmartComponent {
     this.setSubmitHandler(this._submitHandler);
     this.setFavoritesBtnClickHandler(this._favoriteClickHandler);
     this._subscribeOnEvents();
+  }
+
+  rerender() {
+    super.rerender();
+    this._applyFlatpickr();
   }
 
   setSubmitHandler(handler) {
@@ -271,6 +293,33 @@ export default class EditForm extends AbstractSmartComponent {
       this._city = evt.target.value;
       this._description = getRandomArrayItem(DESCRIPTION_ITEMS);
       this.rerender();
+    });
+  }
+
+  _applyFlatpickr() {
+    if (this._flatpickr) {
+      this._flatpickr.destroy();
+      this._flatpickr = null;
+    }
+
+    const dateElementStart = this.getElement().querySelector(`[id^="event-start-time"]`);
+
+    this._flatpickr = flatpickr(dateElementStart, {
+      enableTime: true,
+      dateFormat: `d/m/y H:i`,
+      defaultDate: this._startDate || `today`,
+      time_24hr: true, // eslint-disable-line camelcase
+      allowInput: true,
+    });
+
+    const dateElementEnd = this.getElement().querySelector(`[id^="event-end-time"]`);
+
+    this._flatpickr = flatpickr(dateElementEnd, {
+      enableTime: true,
+      dateFormat: `d/m/y H:i`,
+      defaultDate: this._endDate || `today`,
+      time_24hr: true, // eslint-disable-line camelcase
+      allowInput: true,
     });
   }
 }

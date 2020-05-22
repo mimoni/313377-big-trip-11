@@ -1,4 +1,4 @@
-import {formatTime, formatDate, getRandomArrayItem} from '../utils/common.js';
+import {formatTime, getDuration, getRandomArrayItem} from '../utils/common.js';
 import AbstractComponent from './abstract-component.js';
 
 const createRepeatingOffersMarkup = (options) => {
@@ -18,19 +18,16 @@ const createRepeatingOffersMarkup = (options) => {
 const createWaypointItemTemplate = (card) => {
   const {city, typeOfWaypoints, startDate, endDate, offer, price} = card;
 
-  const {transfers, activities} = typeOfWaypoints;
-
-  const randomWaypointItem = getRandomArrayItem([...transfers, ...activities]);
+  const randomWaypointItem = getRandomArrayItem([...typeOfWaypoints.transfers, ...typeOfWaypoints.activities]);
 
   const isDateShowing = !!startDate;
 
   const time = isDateShowing ? formatTime(startDate) : ``;
-  const date = isDateShowing ? formatDate(startDate) : ``;
-
   const nextTime = isDateShowing ? formatTime(endDate) : ``;
-  const nextDate = isDateShowing ? formatDate(endDate) : ``;
 
   const repeatingOffersMarkup = createRepeatingOffersMarkup(offer);
+
+  const eventDuration = getDuration(startDate, endDate);
 
   return (
     `<li class="trip-events__item">
@@ -43,11 +40,11 @@ const createWaypointItemTemplate = (card) => {
 
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="${date}T${time}">${time}</time>
+            <time class="event__start-time" datetime="">${time}</time>
             &mdash;
-            <time class="event__end-time" datetime="${nextDate}T${nextTime}">${nextTime}</time>
+            <time class="event__end-time" datetime="">${nextTime}</time>
           </p>
-          <p class="event__duration">30M</p>
+          <p class="event__duration">${eventDuration}</p>
         </div>
 
         <p class="event__price">
@@ -55,9 +52,9 @@ const createWaypointItemTemplate = (card) => {
         </p>
 
         <h4 class="visually-hidden">Offers:</h4>
+
         <ul class="event__selected-offers">
           ${repeatingOffersMarkup}
-
         </ul>
 
         <button class="event__rollup-btn" type="button">
